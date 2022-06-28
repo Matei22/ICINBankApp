@@ -25,7 +25,7 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/icinbank-app'),
+      dir: require('path').join(__dirname, './coverage/bank-app-front-end'),
       subdir: '.',
       reporters: [
         { type: 'html' },
