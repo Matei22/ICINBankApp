@@ -4,16 +4,11 @@ import com.bankapp.dtos.BankAccountDTO;
 import com.bankapp.dtos.CurrentBankAccountDTO;
 import com.bankapp.dtos.CustomerDTO;
 import com.bankapp.dtos.SavingBankAccountDTO;
-import com.bankapp.entities.AccountOperation;
-import com.bankapp.entities.CurrentAccount;
-import com.bankapp.entities.Customer;
-import com.bankapp.entities.SavingAccount;
+
 import com.bankapp.enums.AccountStatus;
-import com.bankapp.enums.OperationType;
+import com.bankapp.enums.OperationStatus;
 import com.bankapp.exceptions.CustomerNotFoundException;
-import com.bankapp.repositories.AccountOperationRepository;
-import com.bankapp.repositories.BankAccountRepository;
-import com.bankapp.repositories.CustomerRepository;
+
 import com.bankapp.services.BankAccountService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,9 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 @SpringBootApplication
@@ -36,17 +29,27 @@ public class BankAppBackEndApplication {
 
     @Bean
     CommandLineRunner commandLineRunner(BankAccountService bankAccountService){
+
         return args -> {
-            Stream.of("Hassan","Imane","Mohamed").forEach(name->{
+
+            Stream.of("Mathew","Jhon","Vasile").forEach(name->{
                 CustomerDTO customer=new CustomerDTO();
-                customer.setName(name);
-                customer.setEmail(name+"@gmail.com");
+                customer.setEmailId(name+"@gmail.com");
+                customer.setRole("USER");
+                customer.setPassword("1234");
+                bankAccountService.saveCustomer(customer);
+            });
+            Stream.of("Admin","Lili","Vivi").forEach(name->{
+                CustomerDTO customer=new CustomerDTO();
+                customer.setEmailId(name+"@gmail.com");
+                customer.setRole("ADMIN");
+                customer.setPassword("1234");
                 bankAccountService.saveCustomer(customer);
             });
             bankAccountService.listCustomers().forEach(customer->{
                 try {
-                    bankAccountService.saveCurrentBankAccount(Math.random()*90000,9000,customer.getId());
-                    bankAccountService.saveSavingBankAccount(Math.random()*120000,5.5,customer.getId());
+                    bankAccountService.saveCurrentBankAccount(Math.random()*90000,9000,customer.getEmailId(), AccountStatus.CREATED);
+                    bankAccountService.saveSavingBankAccount(Math.random()*120000,5.5,customer.getEmailId(), AccountStatus.ACTIVATED);
 
                 } catch (CustomerNotFoundException e) {
                     e.printStackTrace();
@@ -57,60 +60,18 @@ public class BankAppBackEndApplication {
                 for (int i = 0; i <10 ; i++) {
                     String accountId;
                     if(bankAccount instanceof SavingBankAccountDTO){
-                        accountId=((SavingBankAccountDTO) bankAccount).getId();
+                        accountId=((SavingBankAccountDTO) bankAccount).getAccId();
                     } else{
-                        accountId=((CurrentBankAccountDTO) bankAccount).getId();
+                        accountId=((CurrentBankAccountDTO) bankAccount).getAccId();
                     }
-                    bankAccountService.credit(accountId,10000+Math.random()*120000,"Credit");
-                    bankAccountService.debit(accountId,1000+Math.random()*9000,"Debit");
+                    bankAccountService.credit(accountId,10000+Math.random()*120000,"Credit", OperationStatus.ACCEPTED);
+                    bankAccountService.debit(accountId,1000+Math.random()*9000,"Debit", OperationStatus.PENDING);
+                    bankAccountService.credit(accountId,10000+Math.random()*120000,"Credit", OperationStatus.PENDING);
+                    bankAccountService.debit(accountId,1000+Math.random()*9000,"Debit", OperationStatus.ACCEPTED);
+                    bankAccountService.credit(accountId,10000+Math.random()*120000,"Credit", OperationStatus.DENIED);
+                    bankAccountService.debit(accountId,1000+Math.random()*9000,"Debit", OperationStatus.DENIED);
                 }
             }
         };
     }
-    //@Bean
-    CommandLineRunner start(CustomerRepository customerRepository,
-                            BankAccountRepository bankAccountRepository,
-                            AccountOperationRepository accountOperationRepository){
-        return args -> {
-            Stream.of("Hassan","Yassine","Aicha").forEach(name->{
-                Customer customer=new Customer();
-                customer.setName(name);
-                customer.setEmail(name+"@gmail.com");
-                customerRepository.save(customer);
-            });
-            customerRepository.findAll().forEach(cust->{
-                CurrentAccount currentAccount=new CurrentAccount();
-                currentAccount.setId(UUID.randomUUID().toString());
-                currentAccount.setBalance(Math.random()*90000);
-                currentAccount.setCreatedAt(new Date());
-                currentAccount.setStatus(AccountStatus.CREATED);
-                currentAccount.setCustomer(cust);
-                currentAccount.setOverDraft(9000);
-                bankAccountRepository.save(currentAccount);
-
-                SavingAccount savingAccount=new SavingAccount();
-                savingAccount.setId(UUID.randomUUID().toString());
-                savingAccount.setBalance(Math.random()*90000);
-                savingAccount.setCreatedAt(new Date());
-                savingAccount.setStatus(AccountStatus.CREATED);
-                savingAccount.setCustomer(cust);
-                savingAccount.setInterestRate(5.5);
-                bankAccountRepository.save(savingAccount);
-
-            });
-            bankAccountRepository.findAll().forEach(acc->{
-                for (int i = 0; i <10 ; i++) {
-                    AccountOperation accountOperation=new AccountOperation();
-                    accountOperation.setOperationDate(new Date());
-                    accountOperation.setAmount(Math.random()*12000);
-                    accountOperation.setType(Math.random()>0.5? OperationType.DEBIT: OperationType.CREDIT);
-                    accountOperation.setBankAccount(acc);
-                    accountOperationRepository.save(accountOperation);
-                }
-
-            });
-        };
-
-    }
-
 }

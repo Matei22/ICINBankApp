@@ -1,5 +1,6 @@
 package com.bankapp.dtos;
 
+import com.bankapp.enums.AccountStatus;
 import lombok.Data;
 
 import java.util.List;
@@ -10,5 +11,6 @@ public class AccountHistoryDTO {
     private int currentPage;
     private int totalPages;
     private int pageSize;
+    private AccountStatus status;
     private List<AccountOperationDTO> accountOperationDTOS;
 }
