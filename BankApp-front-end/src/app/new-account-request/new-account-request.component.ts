@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { AccountDetails, AccountOperationDTOS } from '../model/account.model';
 import { Customer } from '../model/customer.model';
 import { AccountsService } from '../services/accounts.service';
+import { CustomerService } from '../services/customer.service';
 
 @Component({
   selector: 'app-new-account-request',
@@ -16,9 +17,10 @@ export class NewAccountRequestComponent implements OnInit {
   customerId! : string ;
   customer! : Customer;
   newAccounts : Array<AccountDetails>;
-  newAccount:AccountDetails;
-  constructor(private route : ActivatedRoute, private router :Router, private fb : FormBuilder, private accountService : AccountsService) {
-    this.customer=this.router.getCurrentNavigation()?.extras.state as Customer;
+  newAccount : AccountDetails;
+  constructor(private route : ActivatedRoute, private router :Router, private fb : FormBuilder, private accountService : AccountsService, private custServ: CustomerService) {
+    this.customerId = this.route.snapshot.params['emailId'];
+    this.custServ.getCustomer(this.customerId).subscribe((data)=>{this.customer = data}) 
   }
   ngOnInit(): void {
     this.customerId = this.route.snapshot.params['emailId'];

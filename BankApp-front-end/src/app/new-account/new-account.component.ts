@@ -5,6 +5,7 @@ import { Customer } from '../model/customer.model';
 import { AccountsService } from '../services/accounts.service';
 import {v4 as uuidv4} from 'uuid';
 import { AccountDetails } from '../model/account.model';
+import { CustomerService } from '../services/customer.service';
 
 @Component({
   selector: 'app-new-account',
@@ -20,12 +21,12 @@ export class NewAccountComponent implements OnInit {
   account = new AccountDetails();
 
 
-  constructor(private route : ActivatedRoute, private router :Router, private fb : FormBuilder, private service: AccountsService) {
-    this.customer=this.router.getCurrentNavigation()?.extras.state as Customer;
+  constructor(private route : ActivatedRoute, private router :Router, private fb : FormBuilder, private service: AccountsService, private custServ: CustomerService) {
+    this.customerId = this.route.snapshot.params['emailId'];
+    this.custServ.getCustomer(this.customerId).subscribe((data)=>{this.customer = data}) 
    }
 
   ngOnInit(): void {
-    this.customerId = this.route.snapshot.params['emailId'];
     this.operationFromGroup=this.fb.group({
       balance : this.fb.control(0),
     })

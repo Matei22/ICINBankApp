@@ -11,24 +11,29 @@ import { Observable } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
   customer = new Customer();
-  defaultRole = "USER";
+  loggedInCustomer : Customer;
   msg ='';
   constructor(private service:RegistrationService, private router:Router, private customerService: CustomerService) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   loginUser(){
-    this.customer.role = "USER"
     this.service.loginUserFormRemote(this.customer).subscribe({
-      next: (data) => {
-        console.log("response recieved")
-        console.log(this.customer.role)
-        this.router.navigateByUrl("/customer/"+this.customer.emailId,{state :this.customer});
-
+      next: () => {
+        this.customerService.getCustomer(this.customer.emailId).subscribe(
+          (data)=>{
+            this.loggedInCustomer = data;
+            if(this.loggedInCustomer.role=="ADMIN"){
+              this.router.navigateByUrl("/admin");
+            }else if(this.loggedInCustomer.role=="USER"){
+              console.log("response recieved")
+              console.log(this.customer.role)
+              this.router.navigateByUrl("/customer/"+this.customer.emailId,{state :this.customer});
+            }
+          }
+        )
     },
       error: err =>{console.log("Exception occured");
-      console.log(this.customer.role)
       this.msg="Bad Credentials, please enter valid email and password"
     }
     })

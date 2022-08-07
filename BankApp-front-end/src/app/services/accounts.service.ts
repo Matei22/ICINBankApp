@@ -1,7 +1,7 @@
 import {Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {Observable} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 import {AccountDetails, AccountOperationDTOS} from "../model/account.model";
 import { TransferRequests } from '../model/transfer-requests';
 @Injectable({
@@ -12,11 +12,13 @@ export class AccountsService {
   constructor(private http : HttpClient) { }
 
   public getAccount(accountId : string, page : number, size : number):Observable<AccountDetails>{
-    return this.http.get<AccountDetails>(environment.backendHost+"/accounts/"+accountId+"/pageOperations?page="+page+"&size="+size);
+    return this.http.get<AccountDetails>(environment.backendHost+"/accounts/"+accountId+"/pageOperations?page="+page+"&size="+size)
   }
 
   public getAccountsFromCustomer(email:String ,accountId : string, page : number, size : number):Observable<AccountDetails>{
-    return this.http.get<AccountDetails>(environment.backendHost+"/customer/"+email+"/accounts/"+accountId+"/pageOperations?page="+page+"&size="+size);
+    return this.http.get<AccountDetails>(environment.backendHost+"/customer/"+email+"/accounts/"+accountId+"/pageOperations?page="+page+"&size="+size).pipe(
+      catchError(this.handleError)
+    );
   }
 
   public getAccounts(customerId : number):Observable<Array<AccountDetails>>{
@@ -83,5 +85,21 @@ export class AccountsService {
   public updateAccountStatus(emailId:string, accountId:string, status:string):Observable<AccountDetails>{
     let data = {emailId:emailId, accountId:accountId, status:status}
     return this.http.post<AccountDetails>(environment.backendHost+"/accounts/"+emailId +"/" +accountId +"/" + status, data)
+  }
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = ''
+    if (error.status === 0) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, body was: `, error.error);
+        errorMessage = `Backend returned code ${error.status}, body was: `, error.error
+    }
+    // Return an observable with a user-facing error message.
+    errorMessage+='Something bad happened,';
+    return throwError(() => new Error(errorMessage + "please choose a proper id"));
   }
 }

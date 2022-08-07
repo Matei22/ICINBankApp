@@ -76,12 +76,11 @@ public class CustomerRestController {
     public Customer loginUser(@RequestBody Customer customer) throws Exception {
         String tempEmail = customer.getEmailId();
         String tempPassword = customer.getPassword();
-        String tempRole = customer.getRole();
         Customer userObj = null;
-        if(tempEmail != null && tempPassword != null && tempRole!= null){
-            userObj = service.fetchUserByEmailAndPasswordAndRole(tempEmail, tempPassword, tempRole);
+        if(tempEmail != null && tempPassword != null){
+            userObj = service.fetchUserByEmailAndPasswordAndRole(tempEmail, tempPassword);
         }
-        if(userObj == null || !tempRole.equals(userObj.getRole())){
+        if(userObj == null){
             throw new Exception("Bad credentials");
         }
         return userObj;

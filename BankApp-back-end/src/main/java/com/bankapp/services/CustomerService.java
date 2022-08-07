@@ -20,10 +20,10 @@ public class CustomerService {
     public Customer fetchUserByEmailIdAndPassword(String email, String password){
         return repo.findByEmailIdAndPassword(email, password);
     }
-    public Customer fetchUserByEmailAndPasswordAndRole(String email, String password, String role){
+    public Customer fetchUserByEmailAndPasswordAndRole(String email, String password){
         Customer customer = repo.findByEmailId(email);
         System.out.println(customer.toString());
-        if(!Objects.equals(customer.getPassword(), password) && !Objects.equals(customer.getRole(),role)){
+        if(!Objects.equals(customer.getPassword(), password)){
             return null;
         }
         else return customer;

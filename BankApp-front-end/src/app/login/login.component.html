@@ -1,5 +1,5 @@
 <div class="container">
-    <h2>Customer Login</h2>
+    <h2>Login</h2>
     <form #loginform="ngForm" (ngSubmit)="loginUser()">
         <small class="text-danger">{{msg}}</small>
         <div class="form-group">
@@ -31,7 +31,6 @@
         </div>
         <button [disabled]="loginform.form.invalid" type="submit" class="btn btn-info">Login</button>
         <a class="btn btn-success pull-right" routerLink="/registration">New user? Register here!</a>
-        <a class="btn btn-success pull-right" routerLink="/admin-login">Are you admin? Login here!</a>
 
     </form>
 

@@ -1,72 +1,29 @@
-<div class="container">
-  <div>{{customerId}}</div>
-  <div>{{customer | json}}</div>
+<div *ngIf="urlSliced!='admin'">
+  <app-navbar></app-navbar>
 </div>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <div class="image">
-      <img src="assets/img/Bank-icon.jpg" width="40" height="40">
-    </div>
-    <a class="navbar-brand"></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" (click)="handleCustomerAccounts(customer)">Accounts</a>
-        </li>
-        <li class="nav-item" >
-          <a class="nav-link" (click)="handleNewAccount(customer)">New Account</a>
-        </li>
-      </ul>
-      <ul class="navbar-nav">
-        <a class="nav-link">
-          Welcome, {{customer.emailId}}
-        </a>
-        <a class="btn nav-link" (click)="handleLogout()">
-          <i class="bi bi-box-arrow-right"></i>
-        </a>
-      </ul>
-    </div>
-  </div>
-</nav>
-<div class="container mt-2" *ngIf="customer != undefined">
+<div class="container mt-2">
   <div class="row">
     <div class="col col-md-6">
       <div class="card">
         <div class="card-header">Accounts</div>
         <div class="card-body">
           <form [formGroup]="accountFormGroup" (ngSubmit)="handleSearchAccount()">
+            <div class="row" *ngIf="errorMessage">
+              <h5 class="text-danger">{{errorMessage}}</h5>
+            </div>
             <div class="input-group">
               <label class="input-group-text">Account Id :</label>
-              <input type="text" formControlName="accountId" class="form-control">
-              <button class="btn btn-info">
-                <i class="bi bi-search"></i>
+              <input type="text" formControlName="accountId" class="form-control"  >
+              <button class="btn btn-info" [disabled]="accountFormGroup.invalid">
+                <i class="bi bi-search" ></i>
                 Search
               </button>
             </div>
           </form>
-          <ng-template #errorTemplate>
-            <ng-container *ngIf="errorMessage ; else loading">
-              <div class="text-danger">{{errorMessage}}</div>
-            </ng-container>
-            <ng-template #loading>
-              Loading ...
-            </ng-template>
-          </ng-template>
-          <ng-container *ngIf="accountObservable | async as accountDetails">
-            <div class="mb-2">
-              <label>Account ID :</label>
-              <label><strong>{{accountDetails.accId}}</strong></label>
-            </div>
+          <ng-container *ngIf="accountObservable">
             <div class="mb-2">
               <label>Balance :</label>
-              <label><strong>{{accountDetails.balance | number : '1.2-2'}}</strong></label>
+              <label><strong>{{accountObservable.balance | number : '1.2-2'}}</strong></label>
             </div>
             <table class="table">
               <thead>
@@ -77,7 +34,7 @@
                 <th>Status</th>
               </thead>
               <tbody>
-                <tr *ngFor="let op of accountDetails.accountOperationDTOS">
+                <tr *ngFor="let op of accountObservable.accountOperationDTOS">
                   <td>{{op.operationId}}</td>
                   <td>{{op.operationDate | date : 'dd-MM-yyyy:HH-mm-ss'}}</td>
                   <td>{{op.type}}</td>
@@ -87,7 +44,7 @@
               </tbody>
             </table>
             <ul class="nav nav-pills">
-              <li *ngFor="let item of [].constructor(accountDetails.totalPages);let page=index">
+              <li *ngFor="let item of [].constructor(accountObservable.totalPages);let page=index">
                 <a [ngClass]="page==currentPage?'btn-info':'btn-outline-info'" (click)="gotoPage(page)"
                   class="btn  ms-1 mt-1">{{page}}</a>
               </li>
@@ -96,7 +53,7 @@
         </div>
       </div>
     </div>
-    <div class="col col-md-6">
+    <div class="col col-md-6" *ngIf="urlSliced!='admin'">
       <div class="card" *ngIf="accountObservable">
         <div class="card-header">Operations</div>
         <div class="card-body">
@@ -135,8 +92,4 @@
     </div>
   </div>
 </div>
-<div class="container mt-2" *ngIf="customer == undefined">
-  <div class="text-danger">
-    Error!! You don't have permission!
-  </div>
-</div>
+<router-outlet></router-outlet>

@@ -5,6 +5,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { AccountDetails, AccountOperationDTOS } from '../model/account.model';
 import { Customer } from '../model/customer.model';
 import { AccountsService } from '../services/accounts.service';
+import { CustomerService } from '../services/customer.service';
 
 @Component({
   selector: 'app-debit-accounts-requests',
@@ -17,11 +18,11 @@ export class DebitAccountsRequestsComponent implements OnInit {
   debitAccount:AccountOperationDTOS;
   debitAccounts:AccountOperationDTOS[];
   errorMessage: '';
-  constructor(private route : ActivatedRoute, private router :Router, private fb : FormBuilder, private accountService : AccountsService) {
-    this.customer=this.router.getCurrentNavigation()?.extras.state as Customer;
+  constructor(private route : ActivatedRoute, private router :Router, private fb : FormBuilder, private accountService : AccountsService, private custServ: CustomerService) {
+    this.customerId = this.route.snapshot.params['emailId'];
+    this.custServ.getCustomer(this.customerId).subscribe((data)=>{this.customer = data}) 
   }
   ngOnInit(): void {
-    this.customerId = this.route.snapshot.params['emailId'];
     this.accountService.getDebitPendingAccounts(this.customerId).subscribe(
       result=>this.debitAccounts=result)
   }

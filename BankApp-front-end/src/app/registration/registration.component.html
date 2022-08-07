@@ -12,14 +12,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="username">User Name: </label>
-            <input type="text" class="form-control" placeholder="Enter username" name="username"
-                [(ngModel)]="user.emailId" #username="ngModel" required
-                [class.is-invalid]="username.invalid && username.touched">
-            <small class="text-danger" [class.d-none]="username.valid||username.untouched">Username is a required
-                field</small>
-        </div>
-        <div class="form-group">
             <label for="pwd">Password:</label>
             <input type="password" class="form-control" placeholder="Enter password" name="password"
                 [(ngModel)]="user.password" required #password="ngModel"

@@ -5,6 +5,7 @@ import { AccountOperationDTOS } from '../model/account.model';
 import { Customer } from '../model/customer.model';
 import { TransferRequests } from '../model/transfer-requests';
 import { AccountsService } from '../services/accounts.service';
+import { CustomerService } from '../services/customer.service';
 
 @Component({
   selector: 'app-transfer-accounts-requests',
@@ -17,11 +18,11 @@ export class TransferAccountsRequestsComponent implements OnInit {
   transferRequest :TransferRequests;
   transferRequests:TransferRequests[];
   operationDate:Date;
-  constructor(private route : ActivatedRoute, private router :Router, private accountService : AccountsService) {
-    this.customer=this.router.getCurrentNavigation()?.extras.state as Customer;
-  }
-  ngOnInit(): void {
+  constructor(private route : ActivatedRoute, private router :Router, private accountService : AccountsService, private custServ: CustomerService) {
     this.customerId = this.route.snapshot.params['emailId'];
+    this.custServ.getCustomer(this.customerId).subscribe((data)=>{this.customer = data}) 
+   }
+  ngOnInit(): void {
     this.accountService.getTransactionsBasedOnCustomer(this.customerId).subscribe(
       result=>this.transferRequests=result)
   }

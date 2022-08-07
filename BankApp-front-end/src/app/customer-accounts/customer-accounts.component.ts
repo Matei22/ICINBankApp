@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {ActivatedRoute, Router} from "@angular/router";
 import { catchError, Observable, throwError } from 'rxjs';
 import { AccountDetails } from '../model/account.model';
 import {Customer} from "../model/customer.model";
 import { TransferRequests } from '../model/transfer-requests';
 import { AccountsService } from '../services/accounts.service';
+import { CustomerService } from '../services/customer.service';
 
 @Component({
   selector: 'app-customer-accounts',
@@ -17,20 +18,21 @@ export class CustomerAccountsComponent implements OnInit {
   accountFormGroup! : FormGroup;
   currentPage : number =0;
   pageSize : number =5;
-  accountObservable! : Observable<AccountDetails>
-  operationFromGroup! : FormGroup;
-  errorMessage! :string ;
+  accountObservable! : AccountDetails
+  operationFromGroup! : FormGroup | undefined;
+  errorMessage! :any ;
   customerId! : string ;
   customer! : Customer;
-  constructor(private route : ActivatedRoute, private router :Router, private fb : FormBuilder, private accountService : AccountsService) {
-    this.customer=this.router.getCurrentNavigation()?.extras.state as Customer;
-  }
+  urlSliced:any;
+  constructor(private route : ActivatedRoute, private router :Router, private fb : FormBuilder, private accountService : AccountsService, private customerService:CustomerService) {
+    this.customerId = this.route.snapshot.params['emailId'];
+   }
 
   ngOnInit(): void {
-    this.customerId = this.route.snapshot.params['emailId'];
-
+    console.log(this.router.url)
+    this.urlSliced = this.router.url.slice(1,6)
     this.accountFormGroup=this.fb.group({
-      accountId : this.fb.control('')
+      accountId : this.fb.control('', [Validators.required]),
     });
     this.operationFromGroup=this.fb.group({
       operationType : this.fb.control(null),
@@ -40,13 +42,15 @@ export class CustomerAccountsComponent implements OnInit {
     })
   }
   handleSearchAccount() {
-    let accountId : string =this.accountFormGroup.value.accountId;
-    this.accountObservable=this.accountService.getAccountsFromCustomer(this.customer.emailId, accountId,this.currentPage, this.pageSize).pipe(
-      catchError(err => {
-        this.errorMessage=err.message;
-        return throwError(err);
-      })
-    );
+    
+    let accountId = this.accountFormGroup.value.accountId;
+    this.errorMessage = ''
+    this.accountService.getAccountsFromCustomer(this.customerId, accountId,this.currentPage, this.pageSize).subscribe(result=>{
+      this.accountObservable = result;
+    },(error)=>{
+      this.errorMessage=error;
+    }
+    )
   }
 
   gotoPage(page: number) {
@@ -101,17 +105,6 @@ export class CustomerAccountsComponent implements OnInit {
 
     }
     
-  }
-
-  handleLogout(){
-    this.router.navigateByUrl('/login')
-  }
-
-  handleCustomerAccounts(customer: Customer) {
-    this.router.navigateByUrl("/customer-accounts/"+customer.emailId,{state :customer});
-  }
-  handleNewAccount(customer: Customer) {
-    this.router.navigateByUrl("/new-account/"+customer.emailId,{state :customer});
   }
 
 }

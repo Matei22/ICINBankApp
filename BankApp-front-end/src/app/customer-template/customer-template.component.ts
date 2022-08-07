@@ -11,26 +11,9 @@ import { CustomerService } from '../services/customer.service';
 })
 export class CustomerTemplateComponent implements OnInit {
 
-  customer! : Customer;
-  customerId : string ;
-  errorMessage: string;
-
-
-  constructor(private route : ActivatedRoute, private router :Router, private custServ: CustomerService) {
-    this.customer=this.router.getCurrentNavigation()?.extras.state as Customer;
-   }
+  constructor() {}
 
   ngOnInit(): void {
-    this.customerId = this.route.snapshot.params['emailId'];
-  }
-  handleLogout(){
-    this.router.navigateByUrl('/login')
     
-  }
-  handleCustomerAccounts(customer: Customer) {
-    this.router.navigateByUrl("/customer-accounts/"+customer.emailId,{state :customer});
-  }
-  handleNewAccount(customer: Customer) {
-    this.router.navigateByUrl("/new-account/"+customer.emailId,{state :customer});
   }
 }

@@ -14,13 +14,14 @@ import { LoginComponent } from './login/login.component';
 import { AdminTemplateComponent } from './admin-template/admin-template.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { CustomerTemplateComponent } from './customer-template/customer-template.component';
-import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { NewAccountComponent } from './new-account/new-account.component';
 import { RequestComponent } from './request/request.component';
 import { NewAccountRequestComponent } from './new-account-request/new-account-request.component';
 import { CreditAccountsRequestsComponent } from './credit-accounts-requests/credit-accounts-requests.component';
 import { DebitAccountsRequestsComponent } from './debit-accounts-requests/debit-accounts-requests.component';
 import { TransferAccountsRequestsComponent } from './transfer-accounts-requests/transfer-accounts-requests.component';
+import { HomeComponent } from './home/home.component';
+import { ErrorUrlComponent } from './error-url/error-url.component';
 
 @NgModule({
   declarations: [
@@ -34,13 +35,14 @@ import { TransferAccountsRequestsComponent } from './transfer-accounts-requests/
     AdminTemplateComponent,
     RegistrationComponent,
     CustomerTemplateComponent,
-    AdminLoginComponent,
     NewAccountComponent,
     RequestComponent,
     NewAccountRequestComponent,
     CreditAccountsRequestsComponent,
     DebitAccountsRequestsComponent,
     TransferAccountsRequestsComponent,
+    HomeComponent,
+    ErrorUrlComponent,
   ],
   imports: [
     BrowserModule,

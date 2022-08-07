@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AccountsService} from "../services/accounts.service";
 import {catchError, Observable, throwError} from "rxjs";
 import {AccountDetails} from "../model/account.model";
 import { Customer } from '../model/customer.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CustomerService } from '../services/customer.service';
+import { TransferRequests } from '../model/transfer-requests';
 
 @Component({
   selector: 'app-accounts',
@@ -12,86 +14,43 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./accounts.component.css']
 })
 export class AccountsComponent implements OnInit {
+  transferRequest : TransferRequests;
   accountFormGroup! : FormGroup;
   currentPage : number =0;
   pageSize : number =5;
-  accountObservable! : Observable<AccountDetails>
-  operationFromGroup! : FormGroup;
-  errorMessage! :string ;
+  accountObservable! : AccountDetails
+  operationFromGroup! : FormGroup | undefined;
+  errorMessage! :any ;
+  customerId! : string ;
   customer! : Customer;
-
-  constructor(private fb : FormBuilder, private accountService : AccountsService,private route : ActivatedRoute, private router :Router) { 
-    this.customer=this.router.getCurrentNavigation()?.extras.state as Customer;
-  }
+  constructor(private route : ActivatedRoute, private router :Router, private fb : FormBuilder, private accountService : AccountsService, private customerService:CustomerService) {
+    this.customerId = this.route.snapshot.params['emailId'];
+   }
 
   ngOnInit(): void {
     this.accountFormGroup=this.fb.group({
-      id : this.fb.control('')
+      accountId : this.fb.control('', [Validators.required]),
     });
     this.operationFromGroup=this.fb.group({
       operationType : this.fb.control(null),
       amount : this.fb.control(0),
       description : this.fb.control(null),
       accountDestination : this.fb.control(null)
-    })}
-
+    })
+  }
   handleSearchAccount() {
-    let id : string =this.accountFormGroup.value.id;
-    this.accountObservable=this.accountService.getAccount(id,this.currentPage, this.pageSize).pipe(
-      catchError(err => {
-        this.errorMessage=err.message;
-        return throwError(err);
-      })
-    );
+    let accountId = this.accountFormGroup.value.accountId;
+    this.errorMessage = ''
+    this.accountService.getAccount(accountId, this.currentPage, this.pageSize).subscribe(result=>{
+      this.accountObservable = result;
+    },(error)=>{
+      this.errorMessage=error;
+    }
+    )
   }
 
   gotoPage(page: number) {
     this.currentPage=page;
     this.handleSearchAccount();
-  }
-
-  handleAccountOperation() {
-    let id :string = this.accountFormGroup.value.id;
-    let operationType=this.operationFromGroup.value.operationType;
-    let amount :number =this.operationFromGroup.value.amount;
-    let description :string =this.operationFromGroup.value.description;
-    let accountDestination :string =this.operationFromGroup.value.accountDestination;
-    let accountStatus:string = "PENDING"
-    if(operationType=='DEBIT'){
-      this.accountService.debit(accountStatus, id, amount,description).subscribe({
-        next : (data)=>{
-          alert("Success Credit");
-          this.operationFromGroup.reset();
-          this.handleSearchAccount();
-        },
-        error : (err)=>{
-          console.log(err);
-        }
-      });
-    } else if(operationType=='CREDIT'){
-      this.accountService.credit(accountStatus, id, amount,description).subscribe({
-        next : (data)=>{
-          alert("Success Debit");
-          this.operationFromGroup.reset();
-          this.handleSearchAccount();
-        },
-        error : (err)=>{
-          console.log(err);
-        }
-      });
-    }
-    else if(operationType=='TRANSFER'){
-      this.accountService.transfer(accountStatus, id,accountDestination, amount,description).subscribe({
-        next : (data)=>{
-          alert("Success Transfer");
-          this.operationFromGroup.reset();
-          this.handleSearchAccount();
-        },
-        error : (err)=>{
-          console.log(err);
-        }
-      });
-
-    }
   }
 }

@@ -1,50 +1,15 @@
+<app-navbar></app-navbar>
 
 <div class="container">
-    <div>This is the email:  {{customerId}}</div>
-    <div>This is the customer: {{customer | json}}</div>
-  </div>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <div class="image">
-          <img src="assets/img/Bank-icon.jpg" width="40" height="40">
-      </div>
-        <a class="navbar-brand"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page">Home</a>
-            </li>
-            <li class="nav-item" >
-              <a class="nav-link" (click)="handleCustomerAccounts(customer)">Accounts</a>
-            </li>
-            <li class="nav-item" >
-              <a class="nav-link" (click)="handleNewAccount(customer)">New Account</a>
-            </li>
-          </ul>
-          <ul class="navbar-nav">
-              <a class="nav-link">
-                Welcome, {{customer.emailId}}
-              </a>
-              <a class="btn nav-link"  (click)="handleLogout()">
-                  <i class="bi bi-box-arrow-right"></i>
-              </a>
-          </ul>
-        </div>
-      </div>
-    </nav>
-<div class="container">
-    <h2>New Bank Account</h2>
-    <form [formGroup]="operationFromGroup" (ngSubmit)="newAccounts(customer)" method="post">
-        <div class="mb-3">
-          <label class="form-label">Balance :</label>
-          <input type="text" formControlName="balance" class="form-control">
-        </div>
-        <div class="d-grid mb-3">
-          <button class="btn btn-success">Save New Account</button>
-        </div>
-      </form>
+  <h2>New Bank Account</h2>
+  <form [formGroup]="operationFromGroup" (ngSubmit)="newAccounts(customer)" method="post">
+    <div class="mb-3">
+      <label class="form-label">Balance :</label>
+      <input type="text" formControlName="balance" class="form-control">
+    </div>
+    <div class="d-grid mb-3">
+      <button class="btn btn-success">Save New Account</button>
+    </div>
+  </form>
 
 </div>

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AccountOperationDTOS } from '../model/account.model';
 import { Customer } from '../model/customer.model';
 import { AccountsService } from '../services/accounts.service';
+import { CustomerService } from '../services/customer.service';
 
 @Component({
   selector: 'app-credit-accounts-requests',
@@ -16,11 +17,11 @@ export class CreditAccountsRequestsComponent implements OnInit {
   creditAccount :AccountOperationDTOS;
   creditAccounts:AccountOperationDTOS[];
   operationDate:Date;
-  constructor(private route : ActivatedRoute, private router :Router, private accountService : AccountsService) {
-    this.customer=this.router.getCurrentNavigation()?.extras.state as Customer;
+  constructor(private route : ActivatedRoute, private router :Router, private accountService : AccountsService, private custServ: CustomerService) {
+    this.customerId = this.route.snapshot.params['emailId'];
+    this.custServ.getCustomer(this.customerId).subscribe((data)=>{this.customer = data}) 
   }
   ngOnInit(): void {
-    this.customerId = this.route.snapshot.params['emailId'];
     this.accountService.getCreditPendingAccounts(this.customerId).subscribe(
       result=>this.creditAccounts=result)
   }
