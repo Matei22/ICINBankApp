@@ -18,7 +18,8 @@ export class CustomerAccountsComponent implements OnInit {
   accountFormGroup! : FormGroup;
   currentPage : number =0;
   pageSize : number =5;
-  accountObservable! : AccountDetails
+  accountObservable = new AccountDetails()
+  accountTest = new AccountDetails()
   operationFromGroup! : FormGroup | undefined;
   errorMessage! :any ;
   customerId! : string ;
@@ -45,6 +46,9 @@ export class CustomerAccountsComponent implements OnInit {
     
     let accountId = this.accountFormGroup.value.accountId;
     this.errorMessage = ''
+    this.accountService.getAccount(accountId, this.currentPage, this.pageSize).subscribe(
+      data=>this.accountTest.status = data.status
+    )
     this.accountService.getAccountsFromCustomer(this.customerId, accountId,this.currentPage, this.pageSize).subscribe(result=>{
       this.accountObservable = result;
     },(error)=>{

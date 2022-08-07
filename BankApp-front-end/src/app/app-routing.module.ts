@@ -7,6 +7,7 @@ import { CustomerAccountsComponent } from './customer-accounts/customer-accounts
 import { CustomerTemplateComponent } from './customer-template/customer-template.component';
 import { CustomersComponent } from './customers/customers.component';
 import { DebitAccountsRequestsComponent } from './debit-accounts-requests/debit-accounts-requests.component';
+import { ErrorUrlComponent } from './error-url/error-url.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { NewAccountRequestComponent } from './new-account-request/new-account-request.component';
@@ -38,6 +39,7 @@ const routes: Routes = [
       { path: "request", component: RequestComponent }
     ]
   },
+  {path:"**",component: ErrorUrlComponent}
 ];
 
 @NgModule({

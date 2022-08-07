@@ -308,6 +308,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         accountHistoryDTO.setCurrentPage(page);
         accountHistoryDTO.setPageSize(size);
         accountHistoryDTO.setTotalPages(accountOperations.getTotalPages());
+        accountHistoryDTO.setStatus(bankAccount.getStatus());
         return accountHistoryDTO;
     }
     @Override
@@ -360,6 +361,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         accountHistoryDTO.setCurrentPage(page);
         accountHistoryDTO.setPageSize(size);
         accountHistoryDTO.setTotalPages(accountOperations.getTotalPages());
+        accountHistoryDTO.setStatus(bankAccount.getStatus());
         return accountHistoryDTO;
     }
 

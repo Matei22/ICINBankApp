@@ -54,10 +54,9 @@
       </div>
     </div>
     <div class="col col-md-6" *ngIf="urlSliced!='admin'">
-      <div class="card" *ngIf="accountObservable">
+      <div class="card" *ngIf="accountObservable && accountObservable.status =='ACTIVATED'">
         <div class="card-header">Operations</div>
         <div class="card-body">
-
           <form [formGroup]="operationFromGroup" (ngSubmit)="handleAccountOperation()" method="post">
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" formControlName="operationType" value="DEBIT">
@@ -89,6 +88,13 @@
           </form>
         </div>
       </div>
+      <div class="card" *ngIf="accountObservable && accountObservable.status =='CREATED'"> 
+        <h3 style="color: green;"> Your account is created. Please wait until it will be activated by the admin</h3>
+      </div>
+      <div class="card" *ngIf="accountObservable && accountObservable.status =='SUSPENDED'">
+        <h3 class="text-danger">Your account is suspended. Please reach our team for further informations</h3>
+      </div>
+
     </div>
   </div>
 </div>
