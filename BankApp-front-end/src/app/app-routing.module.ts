@@ -8,8 +8,9 @@ import { CustomerTemplateComponent } from './customer-template/customer-template
 import { CustomersComponent } from './customers/customers.component';
 import { DebitAccountsRequestsComponent } from './debit-accounts-requests/debit-accounts-requests.component';
 import { ErrorUrlComponent } from './error-url/error-url.component';
+import { AuthGuard } from './guard/auth.guard';
 import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
+// import { LoginComponent } from './login/login.component';
 import { NewAccountRequestComponent } from './new-account-request/new-account-request.component';
 import { NewAccountComponent } from './new-account/new-account.component';
 import { NewCustomerComponent } from './new-customer/new-customer.component';
@@ -18,14 +19,14 @@ import { RequestComponent } from './request/request.component';
 import { TransferAccountsRequestsComponent } from './transfer-accounts-requests/transfer-accounts-requests.component';
 
 const routes: Routes = [
-  { path: "", component: HomeComponent },
-  { path: "login", component: LoginComponent },
+  { path: "", component: HomeComponent,canActivate:[AuthGuard]  },
+  // { path: "login", component: LoginComponent },
   { path: "registration", component: RegistrationComponent },
-  { path: "new-account/:emailId", component: NewAccountComponent },
-  { path: "customer/:emailId", component: CustomerTemplateComponent },
-  { path: "customer-accounts/:emailId", component: CustomerAccountsComponent },
+  { path: "new-account/:emailId", component: NewAccountComponent ,canActivate:[AuthGuard] },
+  { path: "customer/:emailId", component: CustomerTemplateComponent ,canActivate:[AuthGuard] },
+  { path: "customer-accounts/:emailId", component: CustomerAccountsComponent ,canActivate:[AuthGuard] },
   {
-    path: "admin", component: AdminTemplateComponent,
+    path: "admin", component: AdminTemplateComponent,canActivate:[AuthGuard],
     children: [
       { path: "", component: HomeComponent },
       { path: "customers", component: CustomersComponent },
@@ -36,7 +37,7 @@ const routes: Routes = [
       { path: "transfer-accounts-requests/:emailId", component: TransferAccountsRequestsComponent },
       { path: "debit-accounts-requests/:emailId", component: DebitAccountsRequestsComponent },
       { path: "credit-accounts-requests/:emailId", component: CreditAccountsRequestsComponent },
-      { path: "request", component: RequestComponent }
+      { path: "request", component: RequestComponent },
     ]
   },
   {path:"**",component: ErrorUrlComponent}

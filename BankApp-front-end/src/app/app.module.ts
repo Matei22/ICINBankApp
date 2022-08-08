@@ -10,7 +10,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { NewCustomerComponent } from './new-customer/new-customer.component';
 import { CustomerAccountsComponent } from './customer-accounts/customer-accounts.component';
-import { LoginComponent } from './login/login.component';
+// import { LoginComponent } from './login/login.component';
 import { AdminTemplateComponent } from './admin-template/admin-template.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { CustomerTemplateComponent } from './customer-template/customer-template.component';
@@ -22,6 +22,7 @@ import { DebitAccountsRequestsComponent } from './debit-accounts-requests/debit-
 import { TransferAccountsRequestsComponent } from './transfer-accounts-requests/transfer-accounts-requests.component';
 import { HomeComponent } from './home/home.component';
 import { ErrorUrlComponent } from './error-url/error-url.component';
+import { Login2Component } from './login2/login2.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { ErrorUrlComponent } from './error-url/error-url.component';
     AccountsComponent,
     NewCustomerComponent,
     CustomerAccountsComponent,
-    LoginComponent,
+    // LoginComponent,
     AdminTemplateComponent,
     RegistrationComponent,
     CustomerTemplateComponent,
@@ -43,6 +44,7 @@ import { ErrorUrlComponent } from './error-url/error-url.component';
     TransferAccountsRequestsComponent,
     HomeComponent,
     ErrorUrlComponent,
+    Login2Component,
   ],
   imports: [
     BrowserModule,

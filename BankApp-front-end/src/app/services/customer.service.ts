@@ -25,4 +25,11 @@ export class CustomerService {
   public deleteCustomer(id: string){
     return this.http.delete(environment.backendHost+"/customers/"+id);
   }
+  isLogedIn(){
+    return localStorage.getItem('emailId')!=null;
+  }
+  getEmailId(){
+    return localStorage.getItem('emailId')!=null?localStorage.getItem('emailId'):'';
+
+  }
 }

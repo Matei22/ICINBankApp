@@ -1,35 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Customer } from '../model/customer.model';
 import { RegistrationService } from '../registration.service';
-import {Customer} from '../model/customer.model'
 import { CustomerService } from '../services/customer.service';
-import { Observable } from 'rxjs';
+
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-login2',
+  templateUrl: './login2.component.html',
+  styleUrls: ['./login2.component.css']
 })
-export class LoginComponent implements OnInit {
+export class Login2Component implements OnInit {
   customer = new Customer();
   loggedInCustomer : Customer;
   msg ='';
   constructor(private service:RegistrationService, private router:Router, private customerService: CustomerService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    localStorage.clear()
+  }
 
-  loginUser(){
+  loginUser(loginData:any){
+    console.log(loginData.value)
+
     this.service.loginUserFormRemote(this.customer).subscribe({
       next: () => {
         this.customerService.getCustomer(this.customer.emailId).subscribe(
           (data)=>{
             this.loggedInCustomer = data;
+            localStorage.setItem('emailId', this.loggedInCustomer.emailId)
             if(this.loggedInCustomer.role=="ADMIN"){
               this.router.navigateByUrl("/admin");
             }else if(this.loggedInCustomer.role=="USER"){
               console.log("response recieved")
-              console.log(this.customer.role)
               this.router.navigateByUrl("/customer/"+this.customer.emailId,{state :this.customer});
             }
+         
           }
         )
     },
@@ -37,5 +42,7 @@ export class LoginComponent implements OnInit {
       this.msg="Bad Credentials, please enter valid email and password"
     }
     })
+    console.log(loginData.value)
   }
+
 }
