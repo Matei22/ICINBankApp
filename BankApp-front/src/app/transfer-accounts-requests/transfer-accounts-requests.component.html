@@ -1,0 +1,35 @@
+<div class="container mt-2">
+    <div class="card">
+        <div class="card-header">Details about: "{{customerId}}" credit operations</div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>From Customer</th>
+                        <th>To Customer</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Accept</th>
+                        <th>Decline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let a of transferRequests">
+                        <td id="listacc">{{a.transferId}}</td>
+                        <td>{{a.emailIdFrom}}</td>
+                        <td>{{a.emailIdTo}}</td>
+                        <td>{{a.amount}}</td>
+                        <td>{{a.status}}</td>
+                        <td>
+                            <button id="{{a.transferId}}ACCEPT" (click)="acceptClick(a)">ACCEPT</button>
+                        </td>
+                        <td>
+                            <button id="{{a.transferId}}DECLINE" (click)="declineClick(a)">DECLINE</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,199 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="!loggedIn">
+  <div class="container-fluid">
+    <div class="image">
+      <img src="assets/img/Bank-icon.jpg" width="40" height="40">
+    </div>
+    <a class="navbar-brand"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a id="login" class="nav-link active" routerLink="/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a id="register" class="nav-link active" routerLink="/registration">Register</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="row">
+  <div class="col-3">
+    <div class="card">
+      <img src="assets/img/pexels-m.jpg">
+      <div class="card-title">
+        <h2 style="text-align: center;">ICN Bank</h2>
+      </div>
+      <div class="card-body">
+        <p>This is a Bank App project named ICN Bank App. The features of this project are:</p>
+        <li>You can log in as admin or as customer using the login page provided. </li>
+        <li>If you try to enter URL a root without being authantificated, you will be redirected to the login page.</li>
+        <li>If you don't have any accounts, you can register a new account. If the account is already existing, you have
+          to
+          use another emailId to register.</li>
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+
+    <div class="card">
+      <img src="assets/img/pexels-chr.jpg" class="card-img">
+      <div class="card-title">
+        <h2 style="text-align: center;">Customer choices</h2>
+      </div>
+      <div class="card-body">
+        <li>Press home and redirect to this page;</li>
+        <li>Press new account and redirect to a page where you can enter the balance that you want and wait until the
+          admin will activate or suspend it. Until it will be activated, you can't do any transaction;
+        </li>
+        <li>Press accounts and search you account detailed based on the id;</li>
+        If your account is suspended, or created you will not be able to do any transactions;
+        If your account is activated you will be able to do 3 types of transactions:
+        "DEBIT", "CREDIT" or "TRANSFER";
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+
+    <div class="card">
+      <img src="assets/img/customer.jpg" class="card-img">
+      <div class="card-title">
+        <h2 style="text-align: center;">First two choices</h2>
+      </div>
+      <div class="card-body">
+        <li>If you choose the first one, if your current balance will be greater than the amount that you entered,
+          the request will be send to admin, who will accept or decline the transaction. Until that moment the status
+          will
+          be pending.
+        </li>
+        <li>If you choose the second one, the request will be send to admin, who will accept or decline the transaction.
+          Until that moment the status will be pending.</li>
+        <br><br>
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+
+    <div class="card">
+      <img src="assets/img/pexels-f.jpg" class="card-img">
+      <div class="card-title">
+        <h2 style="text-align: center;">The third one</h2>
+      </div>
+      <div class="card-body">
+
+        <li>If you choose the transfer, you will be able to to transfer money to another bank account based on the id of
+          the account (even from your current account to another of your account). If your current balance is greater
+          then
+          the amount you entered, the request will be send to the administratod and he will decide if he will allow it
+          or
+          not. Until then, your transaction will figure as a DEBIT transaction from your current account, and to the
+          account
+          that you transacted the money, it will figure as a CREDIT transaction.
+        </li>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-3">
+    <div class="card">
+      <img src="assets/img/pexels-c.jpg" class="card-img">
+      <div class="card-title">
+        <h2 style="text-align: center;">Admin choices</h2>
+      </div>
+      <div class="card-body">
+        <li>Go to Home and see this page</li>
+        <li>Go to Accounts and search for an account of your customers and see what transactions they did.</li>
+        <li>Go to Search Accounts. You will be able to search which customer do you want. You can even search some
+          incomplete id, because it wil return all customers that contains in the email id that incomplete id.
+          <br> You can press the Accounts button from every customer and you will be redirected to a page where you can
+          search only the bank account of that particular customer.
+        </li>
+        <li>Or to go to requests. You will be able to see a table which is containing on every row the credit, debit,
+          transfer
+          and new account requests for every customer. You can also search for a particular customer if you want.
+        </li>
+        
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="card">
+      <img src="assets/img/pexels-ch.jpg">
+      <div class="card-title">
+        <h2 style="text-align: center;">First two choice</h2>
+      </div>
+      <div class="card-body">
+        <li> If you press the "credit" button, you will be redirected to a page where you will see all the credit
+          request that were made by that particular customer. You can choose to accept it or decline it. If you accept,
+          then the status of the operation will be changed to ACCEPTED, and if you decline it, the status of the
+          operation will be DECLINED and the money will be returned to the customer from the bank.
+        </li>
+        <li> If you press the "debit" button, you will be redirected to a page where you will see all the debit request
+          that were made by that particular customer. You can choose to accept it or decline it. If you accept, then the
+          status of the operation will be changed to ACCEPTED, and if you decline it, the status of the operation will
+          be DECLINED and the money will be returned to the bank.
+        </li>
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="card">
+      <img src="assets/img/pexels-a.jpg">
+      <div class="card-title">
+        <h2 style="text-align: center;">Third choice</h2>
+      </div>
+      <div class="card-body">
+
+        <li> If you press the "transfer" button, you will be redirected to a page where you will see all transfer
+          request
+          that were made by that particular customer. You can choose to accept it or decline it. <br><br> If you accept, then the
+          status of the operation will be changed to ACCEPTED, and if you decline it, the status of the operation will
+          be
+          DECLINED and the money will be returned to the account of the customer where the transfer was happened, and
+          from
+          the other account, there will be charger the same amount and get back to the initial account from where the
+          transfer began.</li>
+          <br><br><br><br>  
+
+
+
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="card">
+      <img src="assets/img/ICNBank.jpg">
+      <div class="card-title">
+        <h2 style="text-align: center;">Last choice and testing</h2>
+      </div>
+      <div class="card-body">
+        <li> If you press the "new accounts" button, you will be redirected to a page where you will see all the credit
+          request
+          that were made by that particular customer. You can choose to accept it or suspend it. <br><br> If you accept, then the
+          status of the operation will be changed to ACCEPTED, and if you decline it, the status of the operation will
+          be
+          SUSPENDED and the customer can't make any more any transactions.</li>
+          <br>
+        You can test the app (with Selenium) by going
+        to th back end and start the testings. It will test all these facilities and how the app handles the errors
+        (like: "Bad credentials", "email invalid", "email is a required field","password is a req field", "password and
+        confirm password must be the same" etc.)
+        <br><br>  
+        
+  
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<div class="row">
+
+</div>
+<router-outlet></router-outlet>

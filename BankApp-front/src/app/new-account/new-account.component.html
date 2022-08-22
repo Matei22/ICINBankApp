@@ -1,0 +1,15 @@
+<app-navbar></app-navbar>
+<div class="container" style="text-align: center;">
+  <div class="card custom" >
+    <h2>New Bank Account</h2>
+    <form [formGroup]="operationFromGroup" (ngSubmit)="newAccounts(customer)" method="post">
+      <div class="mb-3">
+        <label class="form-label">Balance :</label>
+        <input id="balance" type="text" formControlName="balance" class="form-control">
+      </div>
+      <div class="d-grid mb-3">
+        <button id="saveOperation" class="btn btn-success">Save New Account</button>
+      </div>
+    </form>
+  </div>
+</div>
